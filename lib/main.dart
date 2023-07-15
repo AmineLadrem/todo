@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/auth/register_page.dart';
-import 'package:todo/constants/colors.dart';
+import 'package:todo/auth/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +18,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login Page',
-      home: register(),
+      home: login(),
     );
   }
 }
