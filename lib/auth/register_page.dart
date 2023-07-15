@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:todo/helpers/IP.dart';
+
 class register extends StatefulWidget {
   const register({super.key});
 
@@ -22,7 +24,7 @@ class _registerState extends State<register> {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> registerUser() async {
-    String url = 'http://10.0.2.2:8000/api/user/register';
+    String url = ipAddresses[1] + '/api/user/register';
 
     try {
       final response = await http.post(
@@ -36,15 +38,28 @@ class _registerState extends State<register> {
 
       if (response.statusCode == 201) {
         // User created successfully
-        print('User created successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User created successfully'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        // Delay navigation to login screen after 5 seconds
+        Future.delayed(Duration(seconds: 5), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => login()),
+          );
+        });
       } else {
-        // Error occurred, show alert dialog
+        // Error occurred, show the plain text error message
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
               title: Text('Error'),
-              content: Text('An error occurred while registering the user.'),
+              content: Text(response.body),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context),
@@ -56,7 +71,8 @@ class _registerState extends State<register> {
         );
       }
     } catch (error) {
-      // Exception occurred, show alert dialog
+      // error of the error handling
+
       showDialog(
         context: context,
         builder: (context) {

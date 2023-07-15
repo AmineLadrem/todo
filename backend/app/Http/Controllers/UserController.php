@@ -39,7 +39,9 @@ class UserController extends Controller
     
             // Check if the validation fails
             if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 400);
+                // Join the error messages into a single string
+                $errorMessage = implode("\n", $validator->errors()->all());
+                return response($errorMessage, 400);
             }
     
             // Create a new user
