@@ -85,7 +85,7 @@ class _loginState extends State<login> {
                           decoration: InputDecoration(
                             labelText: '  E-mail',
                             labelStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -121,7 +121,7 @@ class _loginState extends State<login> {
                           decoration: InputDecoration(
                             labelText: '  Password',
                             labelStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -186,7 +186,7 @@ class _loginState extends State<login> {
                             ..onTap = () {
                               // Handle the register click event here
                               // For example, you can navigate to the register screen
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => register()),

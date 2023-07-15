@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:todo/auth/login_page.dart';
 import 'package:todo/constants/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class register extends StatefulWidget {
   const register({super.key});
@@ -17,6 +20,60 @@ class _registerState extends State<register> {
   TextEditingController fullname = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  Future<void> registerUser() async {
+    String url = 'http://10.0.2.2:8000/api/user/register';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'name': fullname.text,
+          'email': emailController.text,
+          'password': passwordController.text,
+        },
+      );
+
+      if (response.statusCode == 201) {
+        // User created successfully
+        print('User created successfully');
+      } else {
+        // Error occurred, show alert dialog
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('An error occurred while registering the user.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } catch (error) {
+      // Exception occurred, show alert dialog
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('An error occurred: $error'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +138,7 @@ class _registerState extends State<register> {
                           decoration: InputDecoration(
                             labelText: '  Full Name',
                             labelStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -117,7 +174,7 @@ class _registerState extends State<register> {
                           decoration: InputDecoration(
                             labelText: '  E-mail',
                             labelStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -153,7 +210,7 @@ class _registerState extends State<register> {
                           decoration: InputDecoration(
                             labelText: '  Password',
                             labelStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -189,7 +246,7 @@ class _registerState extends State<register> {
                           decoration: InputDecoration(
                             labelText: '  Confirm Password',
                             labelStyle: TextStyle(
-                              color: Colors.grey[400],
+                              color: Colors.grey[500],
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -205,7 +262,7 @@ class _registerState extends State<register> {
                 height: 40,
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: registerUser,
                   child: Container(
                     width: 300,
                     height: 50,
@@ -254,7 +311,7 @@ class _registerState extends State<register> {
                             ..onTap = () {
                               // Handle the register click event here
                               // For example, you can navigate to the register screen
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => login()),
